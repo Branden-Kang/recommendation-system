@@ -227,3 +227,26 @@ CTR prediction 모델 개발 시 **“광고 효율 CTR 벤치마크 대비 120%
 
 - 실무에서는 CTR prediction 모델을 **AUC/LogLoss 개선**만으로 평가하지 않고, 반드시 **online A/B test에서 CTR, CVR, Revenue, Calibration** 을 함께 점검하는 것이 바람직하다.
 - 논문에 보고된 uplift 수치는 **데이터셋, baseline 강도, feature quality, serving 환경**에 따라 크게 달라질 수 있으므로, 내부 목표 수치는 논문 수치를 그대로 복사하기보다 **우리 서비스 baseline 수준**을 반영해 재설정해야 한다.
+
+## 대표 Multi-domain CTR 논문
+1) STAR
+One Model to Serve All: Star Topology Adaptive Recommender for Multi-Domain CTR Prediction https://arxiv.org/pdf/2101.11427 가장 대표적인 출발점으로 많이 인용됩니다. 여러 비즈니스 도메인에 대해 shared centered parameters + domain-specific parameters를 함께 두어, 하나의 모델이 여러 도메인을 동시에 서빙하도록 설계했습니다. Alibaba display advertising system에 배포되었고, 논문에서는 평균 CTR 8.0%, RPM 6.0% 개선을 보고합니다. 
+2) AdaSparse
+AdaSparse: Learning Adaptively Sparse Structures for Multi-Domain Click-Through Rate Prediction https://arxiv.org/pdf/2206.13108 도메인별로 중요한 신경망 구조가 다르다는 점에 주목해서, domain마다 다른 sparse structure를 adaptively 학습하는 방식입니다. multi-domain CTR에서 generalization과 deployment complexity를 동시에 문제로 보고 접근한 논문입니다. 
+3) Uni-CTR
+A Unified Framework for Multi-Domain CTR Prediction via Large Language Models LLM을 활용해 domain 공통 semantic representation을 강화하고, 동시에 pluggable domain-specific network로 domain 특성도 반영하는 구조입니다. 논문에서는 multi-domain CTR의 seesaw phenomenon과 insufficient generalization 문제를 직접 다룹니다. 
+4) Star+
+Star+: A New Multi-Domain Model for CTR Prediction https://arxiv.org/pdf/2406.16568 STAR를 확장한 후속 연구 성격의 논문입니다. 단순 shared-vs-domain split을 넘어서 복잡한 inter-domain relationship을 더 잘 반영하려는 방향으로 제안되었습니다. 최신 academic follow-up으로 보기 좋습니다. 
+5) MLoRA
+MLoRA: Multi-Domain Low-Rank Adaptive Network for CTR Prediction 기존 multi-domain 모델들이 domain module 때문에 파라미터가 커지고 학습이 비효율적이라는 점을 문제로 보고, domain별 LoRA module을 붙이는 방식으로 개선한 논문입니다. Alibaba.com production environment 배포와 online A/B superiority도 언급합니다. 
+같이 보면 좋은 인접 논문 / 벤치마크
+6) MDL
+MDL: A Unified Multi-Distribution Learner in Large-scale Recommender Systems 제목 자체는 CTR 전용은 아니지만, 대규모 recommendation에서 multi-distribution / multi-domain 문제를 통합적으로 다루며 STAR 계열을 잇는 흐름으로 볼 수 있습니다. multi-domain CTR 문헌 리뷰에서 함께 언급되는 편입니다. 
+7) Multi-scenario benchmark / related work
+최근 benchmark나 survey 성격의 문헌에서는 AdaSparse를 multi-scenario CTR prediction 대표 모델로 정리하고 있습니다. 실무에서는 domain, scenario, scene이 거의 유사한 문제 설정으로 등장하는 경우가 많아 같이 보는 게 도움이 됩니다. 
+흐름으로 보면
+대략 이렇게 발전했다고 보시면 됩니다.
+* STAR (2021): multi-domain CTR의 대표 출발점. “하나의 모델로 여러 domain 서빙”을 본격화. 
+* AdaSparse (2022): domain마다 다른 sparse sub-network를 학습. 
+* Uni-CTR (2023): LLM semantic representation을 multi-domain CTR에 결합. 
+* Star+ / MLoRA (2024): STAR 계열의 구조 개선, parameter-efficient adaptation 강화.
