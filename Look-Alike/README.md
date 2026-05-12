@@ -4,8 +4,9 @@
 
 | 논문 / 사례 | 문제정의 | 데이터 | 방법 | 장점 | 한계 | 우리 서비스 적용 포인트 |
 |---|---|---|---|---|---|---|
-| **Finding Users Who Act Alike: Transfer Learning for Expanding Advertiser Audiences** (Pinterest, KDD 2019) | 광고주가 보유한 **seed customer**를 기반으로 더 넓은 잠재 고객군을 찾는 audience look-alike targeting 문제 | Pinterest 광고 플랫폼의 실제 advertiser audience/seed user 데이터 기반 production 문제 | **2-stage embedding-based audience expansion**과 transfer learning을 결합한 산업형 시스템 | 실서비스 배포 사례라서 구조가 현실적이고, 초기 lookalike 시스템의 기준점으로 좋음 | 최근 논문 대비 user heterogeneity, multi-view feature, graph/text signal 반영이 약함 | 우리 서비스에서 **가장 먼저 만들기 쉬운 baseline**. seed 유저 정의 → user embedding 생성 → ANN 검색 구조로 MVP를 빠르게 만들 수 있음 |
+| **Audience Expansion for Online Social Network Advertising** (LinkedIn, KDD 2016) | LinkedIn 광고주가 세부 demographic targeting 조건을 직접 모두 지정하기 어렵다는 문제를 해결하기 위해, 기존 target audience와 유사한 사용자를 자동으로 확장하는 audience expansion 문제 | LinkedIn 광고 플랫폼의 실제 회원 프로필, demographic targeting attribute, campaign targeting criteria, 광고 노출/CTR/auction 로그 기반 production 데이터 | **Campaign-agnostic expansion + Campaign-aware expansion + Hybrid strategy**. Campaign-agnostic 방식은 Similar-X를 활용해 회원 프로필 attribute를 확장하고, campaign-aware 방식은 campaign의 exact audience와 유사한 lookalike member를 nearest-neighbor 방식으로 찾음 | 실제 LinkedIn 광고 시스템에 배포된 production 사례이며, “광고주가 seed list를 제공하지 않아도 targeting 조건만으로 audience expansion을 수행”한다는 점이 실무적으로 강함. 또한 CTR prediction과 auction ranking을 기존 serving flow에 통합해 relevance 저하를 완화 | 프로필 attribute와 demographic targeting 중심이라 최신 deep embedding, graph neural network, LLM 기반 semantic signal은 반영되지 않음. Campaign-aware 방식은 offline batch processing이 필요해 campaign 생성 직후 즉시 적용에는 제약이 있음 | seed 고객 리스트가 부족하거나, 광고주가 직접 타깃 조건만 입력하는 환경에서 매우 유용. 우리 서비스에서도 **“선택한 타깃 조건 기반 자동 확장”** 기능을 만들 때 참고하기 좋으며, campaign-agnostic baseline과 campaign-aware 고도화 모델을 함께 운영하는 hybrid 구조 설계에 활용 가능 |
 | **A Sub-linear, Massive-scale Look-alike Audience Extension System** (Yahoo, 2016) | 광고주 seed와 비슷한 사용자를 **초대규모 유저 풀에서 빠르게 찾는** audience extension 문제 | 수십억 사용자, 수백만 피처, 앱 설치 광고 캠페인 데이터 | **Graph-constrained look-alike system**. 전역 user-to-user similarity graph를 만든 뒤, nearest-neighbor filtering으로 후보를 줄이고 캠페인별 모델링 수행 | **대규모 확장성**이 매우 강함. 논문 기준 3 billion+ users, 3000+ campaigns를 4시간 내 처리. 전환율 및 CPA 개선도 제시 | 그래프 구축 비용이 크고, 피처/그래프 품질에 민감. 최신 deep embedding/LLM 기반 표현력은 없음 | 사용자 수가 많고 검색 시간을 강하게 제약받는 환경에 적합. **후보군 축소용 retrieval layer** 설계에 특히 참고할 가치가 큼 |
+| **Finding Users Who Act Alike: Transfer Learning for Expanding Advertiser Audiences** (Pinterest, KDD 2019) | 광고주가 보유한 **seed customer**를 기반으로 더 넓은 잠재 고객군을 찾는 audience look-alike targeting 문제 | Pinterest 광고 플랫폼의 실제 advertiser audience/seed user 데이터 기반 production 문제 | **2-stage embedding-based audience expansion**과 transfer learning을 결합한 산업형 시스템 | 실서비스 배포 사례라서 구조가 현실적이고, 초기 lookalike 시스템의 기준점으로 좋음 | 최근 논문 대비 user heterogeneity, multi-view feature, graph/text signal 반영이 약함 | 우리 서비스에서 **가장 먼저 만들기 쉬운 baseline**. seed 유저 정의 → user embedding 생성 → ANN 검색 구조로 MVP를 빠르게 만들 수 있음 |
 | **Learning to Expand Audience via Meta Hybrid Experts and Critics for Recommendation and Advertising** (KDD 2021) | 다양한 캠페인이 동시에 존재하고, 각 캠페인의 seed set이 작아 **캠페인별 overfitting**이 발생하는 audience expansion 문제 | 추천/광고 플랫폼의 다수 마케팅 캠페인과 seed audience | **MetaHeac**라는 2-stage meta-learning 프레임워크. 여러 캠페인에서 transferable knowledge를 학습하고 특정 캠페인에 빠르게 적응 | 신규 캠페인이나 seed가 작은 캠페인에 강하고, “캠페인 간 일반화”라는 실무 문제를 정면으로 다룸 | 학습/운영 구조가 복잡하고, 메타러닝 파이프라인 유지비용이 큼 | 캠페인 종류가 많고 **seed 수가 작은 세그먼트**가 많다면 유용. 금융/커머스에서 상품군별 타기팅 모델을 따로 만들기 어려울 때 적합 |
 | **네이버 DEVIEW 2021 - Look-alike Modeling and Serving 비슷한 사람을 찾아주세요** | 단순히 seed와 비슷한 사람을 찾는 것이 아니라, **광고 효율(전환)**을 높이면서도 CTR/노출 규모까지 고려하는 lookalike 문제 | 익명화된 사용자 행동 데이터, 구매 카테고리 여부, 광고 플랫폼 로그. 슬라이드 기준 IAB purchase intent taxonomy 약 600개 카테고리 사용 | **User Embedding Model + PU learning + offline/online serving 분리**. 행동 데이터를 기반으로 사용자 임베딩을 학습하고, online에서는 광고주 요청 seed로 lookalike를 생성 | 실제 광고 플랫폼 운영 관점이 강함. 성능뿐 아니라 **CTCVR/CVR/CTR**과 처리량을 동시에 고려. 1억+ 유저에 대해 10분 이내 유사도 계산 목표 제시 | 슬라이드 자료라 논문처럼 엄밀한 실험 세부가 제한적. 광고 플랫폼 내부 데이터 의존성이 큼 | **광고 성과 중심 lookalike**를 만들 때 매우 참고 가치가 큼. 단순 similarity보다 비즈니스 지표 최적화를 목표로 삼아야 할 때 적합 |
 | **Finding Lookalike Customers for E-Commerce Marketing** (Walmart, 2023) | CRM email/push 마케팅에서 기존 고객(seed set)과 유사한 고객을 찾아 **캠페인 reach와 revenue**를 키우는 문제 | Walmart e-commerce의 대규모 고객 데이터 | **Deep customer embedding + approximate nearest neighbor search**. 비즈니스 관심사별 해석 가능한 similarity metric 구성 | 대규모 확장성, 구현 단순성, retrieval serving 용이성이 큼 | 복잡한 관계 구조나 텍스트 의미 신호는 graph/LLM 계열보다 덜 반영될 수 있음 | 우리 서비스에서 **가장 추천되는 1순위 실전형 구조**. user feature가 충분하고 대규모 타깃 검색이 필요하면 빠르게 온라인화 가능 |
@@ -29,6 +30,7 @@ lookalike 기술은 하나의 고정된 방법이라기보다,
 ---
 
 ### 1. 규칙/통계 기반 Similarity 모델
+
 **설명**  
 사용자를 sparse feature vector로 표현한 뒤, seed audience의 평균 벡터와 각 사용자 벡터 사이의 유사도를 계산하는 방식이다.  
 정보검색(IR) 관점과 유사하며, TF-IDF, cosine similarity, mean audience vector 같은 기법이 대표적이다.
@@ -49,13 +51,43 @@ lookalike 기술은 하나의 고정된 방법이라기보다,
 
 ---
 
-### 2. Embedding 기반 Retrieval 모델
+### 2. Profile Attribute / Hybrid Audience Expansion 모델
+
+**설명**  
+광고주가 입력한 targeting criteria 또는 기존 exact audience를 기반으로, 유사한 profile attribute나 유사 사용자를 찾아 audience를 확장하는 방식이다.  
+단일 seed customer list가 없어도 demographic targeting 조건만으로 audience expansion을 수행할 수 있다는 점이 특징이다.
+
+**대표 사례**
+- LinkedIn KDD 2016 - Audience Expansion for Online Social Network Advertising
+
+**핵심 특징**
+- Campaign-agnostic expansion과 campaign-aware expansion을 함께 활용
+- Campaign-agnostic 방식은 campaign 생성 직후에도 빠르게 적용 가능
+- Campaign-aware 방식은 campaign별 exact audience에 더 정교하게 맞출 수 있음
+- Hybrid strategy를 통해 coverage와 precision의 trade-off를 완화
+- 기존 CTR prediction, ad serving, auction ranking flow와 통합 가능
+
+**세부 하위 유형**
+- **Campaign-agnostic expansion**: campaign과 무관하게 미리 계산된 유사 attribute 또는 유사 profile 정보를 이용해 타깃 조건을 확장
+- **Campaign-aware expansion**: 특정 campaign의 exact audience를 기준으로 nearest-neighbor 방식의 lookalike member를 찾음
+- **Hybrid expansion**: 두 방식을 결합하여 즉시성, coverage, relevance를 함께 확보
+
+**언제 적합한가**
+- 광고주가 seed 고객 리스트를 충분히 제공하지 못할 때
+- 광고주가 나이, 직무, 산업, 관심사 등 targeting 조건만 입력하는 환경일 때
+- campaign 생성 직후에는 빠른 확장이 필요하고, 이후에는 campaign-specific 고도화를 적용하고 싶을 때
+- 광고 inventory 활용률과 advertiser reach를 동시에 높이고 싶을 때
+
+---
+
+### 3. Embedding 기반 Retrieval 모델
+
 **설명**  
 사용자 행동/프로필 데이터를 바탕으로 dense embedding을 학습하고, seed audience와 가까운 사용자를 nearest neighbor 검색으로 찾는 방식이다.
 
 **대표 사례**
-- Pinterest (2019)
-- Walmart (2023)
+- Pinterest KDD 2019
+- Walmart 2023
 - 네이버 DEVIEW 2021
 
 **핵심 특징**
@@ -76,12 +108,13 @@ lookalike 기술은 하나의 고정된 방법이라기보다,
 
 ---
 
-### 3. Graph 기반 Lookalike 모델
+### 4. Graph 기반 Lookalike 모델
+
 **설명**  
 사용자-상품-행동-캠페인 관계를 그래프로 보고, 그래프 위에서 유사 사용자나 확장 audience를 찾는 방식이다.
 
 **대표 사례**
-- Yahoo (2016)
+- Yahoo 2016
 - Graph-Based Audience Expansion Model for Marketing Campaigns (SIGIR 2024)
 
 **핵심 특징**
@@ -102,7 +135,8 @@ lookalike 기술은 하나의 고정된 방법이라기보다,
 
 ---
 
-### 4. Graph + LLM / Semantic Hybrid 모델
+### 5. Graph + LLM / Semantic Hybrid 모델
+
 **설명**  
 그래프 구조와 텍스트 의미 정보를 함께 사용해 lookalike를 찾는 방식이다.  
 예를 들어 product reviews, item descriptions, LLM-generated user/item profiles를 그래프 정보와 함께 사용한다.
@@ -122,7 +156,8 @@ lookalike 기술은 하나의 고정된 방법이라기보다,
 
 ---
 
-### 5. Meta-learning 기반 Audience Expansion 모델
+### 6. Meta-learning 기반 Audience Expansion 모델
+
 **설명**  
 여러 캠페인에서 공통적으로 통하는 lookalike 확장 전략을 학습한 뒤, 새로운 캠페인에 빠르게 적응하는 방식이다.
 
@@ -140,7 +175,8 @@ lookalike 기술은 하나의 고정된 방법이라기보다,
 
 ---
 
-### 6. Generative Targeting 모델
+### 7. Generative Targeting 모델
+
 **설명**  
 기존 lookalike처럼 “비슷한 사람 찾기”만 하는 것이 아니라, 타깃 audience 정의 자체를 생성형 모델로 유연하게 만드는 방식이다.
 
@@ -159,7 +195,8 @@ lookalike 기술은 하나의 고정된 방법이라기보다,
 
 ---
 
-### 7. Few-shot / Zero-shot Audience Expansion
+### 8. Few-shot / Zero-shot Audience Expansion
+
 **설명**  
 seed가 매우 적거나 거의 없는 신규 캠페인에서도 audience expansion이 가능하도록, 사전학습된 user/task model을 활용하는 방식이다.
 
@@ -182,6 +219,7 @@ seed가 매우 적거나 거의 없는 신규 캠페인에서도 audience expans
 | 카테고리 | 대표 사례 | 핵심 키워드 |
 |---|---|---|
 | 규칙/통계 기반 Similarity | Adobe | TF-IDF, cosine similarity, audience mean vector |
+| Profile Attribute / Hybrid Expansion | LinkedIn | campaign-agnostic expansion, campaign-aware expansion, Similar-X, Similar-Profiles, hybrid strategy |
 | Embedding 기반 Retrieval | Pinterest, Walmart, 네이버 | user embedding, ANN, retrieval, performance-aware serving |
 | Graph 기반 | Yahoo, SIGIR 2024 | user graph, nearest-neighbor filtering, graph modeling |
 | Graph + LLM Hybrid | GLoM | GNN, LLM, review text, semantic profile |
@@ -196,18 +234,32 @@ seed가 매우 적거나 거의 없는 신규 캠페인에서도 audience expans
 현재 lookalike 기술은 아래 흐름으로 발전하고 있다고 볼 수 있다.
 
 1. **Similarity 기반**
-2. **Embedding retrieval 기반**
-3. **Graph 기반**
-4. **Graph + semantic/LLM 기반**
-5. **Meta-learning / few-shot 기반**
-6. **Generative audience design 기반**
+2. **Profile attribute / hybrid audience expansion 기반**
+3. **Embedding retrieval 기반**
+4. **Graph 기반**
+5. **Graph + semantic/LLM 기반**
+6. **Meta-learning / few-shot 기반**
+7. **Generative audience design 기반**
 
-즉, 과거에는 “닮은 사람 찾기” 자체가 중심이었다면,  
-최근에는 “적은 seed로도 확장 가능하게 만들기”, “텍스트 의미까지 반영하기”,  
-그리고 “마케터가 직접 타깃을 생성하게 만들기”로 진화하고 있다.
+즉, 초기에는 LinkedIn처럼 **광고주가 지정한 demographic targeting 조건을 유사 attribute와 유사 member로 확장하는 방식**이 중심이었다면,  
+이후에는 Pinterest, Walmart, Naver 사례처럼 **dense user embedding과 retrieval serving 구조**로 발전했고,  
+최근에는 graph, LLM, few-shot learning을 활용해 sparse seed와 semantic signal까지 다루는 방향으로 확장되고 있다.
+
+## 우리 서비스 관점의 적용 우선순위
+
+| 우선순위 | 추천 접근 | 이유 |
+|---|---|---|
+| 1순위 | **Embedding 기반 Retrieval** | user feature와 행동 로그가 충분하다면 MVP와 production serving 모두에 가장 현실적 |
+| 2순위 | **Profile Attribute / Hybrid Expansion** | 광고주가 seed user list를 주지 않고 타깃 조건만 설정하는 서비스라면 LinkedIn 방식이 매우 유용 |
+| 3순위 | **Graph 기반 Retrieval / Modeling** | 유저-상품-카테고리-콘텐츠 간 관계가 풍부하다면 후보군 확장 성능 개선 가능 |
+| 4순위 | **Meta-learning / Few-shot** | 신규 캠페인과 sparse seed 문제가 심해질 때 고도화 방향으로 적합 |
+| 5순위 | **LLM / Generative Targeting** | 마케터가 자연어로 audience criteria를 생성하거나 설명 가능한 campaign planning 도구를 만들 때 적합 |
+
+---
 
 ## 참고 링크
 
+- [LinkedIn - Audience Expansion for Online Social Network Advertising](https://www.kdd.org/kdd2016/papers/files/adf0483-liuA.pdf)
 - [Pinterest - Finding Users Who Act Alike: Transfer Learning for Expanding Advertiser Audiences](https://www.pinterestcareers.com/media/phkg2uau/transferlearning-kdd2019.pdf)
 - [Yahoo - A Sub-linear, Massive-scale Look-alike Audience Extension System](http://proceedings.mlr.press/v53/ma16.pdf)
 - [MetaHeac - Learning to Expand Audience via Meta Hybrid Experts and Critics for Recommendation and Advertising](https://arxiv.org/pdf/2105.14688)
