@@ -68,18 +68,29 @@
 
 ## 4. 주요 논문 및 리서치 정리
 
+이 섹션은 예측 모델링 관점에서 직접적으로 참고할 수 있는 논문과 리서치 중심으로 재정리했다. 기존에 포함되어 있던 이메일 마케팅 해설, 개인정보 규제 문서, 동의 배너 UX 연구는 완전히 무관하지는 않지만, 예측 모델링 방법론 문헌으로 보기는 어렵다. 따라서 4장에서는 제외하고, 규제·윤리 자료는 12장으로 이동하는 것이 더 적절하다.
+
 | 구분 | 제목 / 주제 | 저자 / 기관 | 핵심 내용 | 실무 시사점 | 링크 |
 |---|---|---|---|---|---|
-| 학술 논문 | Modeling Customer Opt-In and Opt-Out in a Permission-Based Marketing Context | Kumar, Zhang, Luo / Journal of Marketing Research | 고객의 마케팅 opt-in, opt-out, 거래금액을 함께 모델링. 마케팅 강도와 고객 반응이 동의 유지 및 철회에 영향을 미침 | 동의 철회는 단순 이벤트가 아니라 고객 생애주기, 마케팅 접촉, 구매 행동과 함께 봐야 함 | https://journals.sagepub.com/doi/10.1509/jmr.13.0169 |
-| 리서치 / 소비자 조사 | Understanding Unsubscribes | Mailgun | 소비자가 이메일을 수신거부하는 주요 이유로 과도한 발송 빈도, 낮은 관련성, 관심 감소 등이 제시됨 | 빈도 관리와 콘텐츠 관련성 개선이 unsubscribe 감소의 핵심 | https://www.mailgun.com/blog/email/understanding-unsubscribes/ |
-| 마케팅 분석 해설 | The Definitive Guide to Predictive Analytics Models for Marketing | Acquia | propensity to unsubscribe 모델을 포함해 마케팅 예측 모델 유형을 설명 | 수신거부 성향 모델은 발송 빈도, 캠페인 제외, 고객 세그먼트 운영에 활용 가능 | https://www.acquia.com/blog/definitive-guide-predictive-analytics-models-marketing |
-| 이메일 마케팅 해설 | 3 Predictive Models Email Marketers Need to Know About | FulcrumTech | unsubscribe propensity, purchase propensity 등 이메일 마케팅에서 활용 가능한 예측 모델 소개 | 이메일 CRM에서 고위험 고객의 발송 빈도 조정 및 preference update 유도가 가능 | https://fulcrumtech.net/resources/3-predictive-models-email-marketers-need-to-know-about/ |
-| 분석 방법론 | Customer Behaviour AI: Propensity Modelling Is Powerful, But It’s Not a Magic Bullet for Marketers | Faculty | propensity model의 유용성과 한계를 설명. 단순 예측만으로는 마케팅 개입 효과를 판단하기 어렵고 실험 설계가 필요하다고 설명 | 철회 성향 모델은 A/B 테스트, holdout, uplift 분석과 함께 운영해야 함 | https://faculty.ai/insights/articles/customer-behaviour-ai-propensity-modelling-is-powerful-but-its-not-a-magic-bullet-for-marketers |
-| 개인정보 / UX 연구 | Dark Patterns after the GDPR: Scraping Consent Pop-ups and Demonstrating Their Influence | 연구 논문 / arXiv | 동의 배너의 프레이밍, 기본값, 선택 구조가 사용자의 동의 행동에 영향을 준다는 점을 분석 | 동의·철회 UX는 고객 자율성을 해치지 않도록 투명하게 설계해야 함 | https://arxiv.org/abs/1909.02638 |
-| 개인정보 규제 | GDPR Article 7 - Conditions for Consent | GDPR | 동의 철회는 동의만큼 쉬워야 하며, 철회 이후에는 해당 동의에 근거한 처리를 지속할 수 없음을 명시 | 예측 모델을 철회 방해나 dark pattern에 활용하면 안 됨 | https://gdpr-info.eu/art-7-gdpr/ |
-| 국내 규제 | 개인정보 보호법 제37조 | 국가법령정보센터 | 정보주체는 개인정보 처리정지를 요구하거나 개인정보 처리에 대한 동의를 철회할 수 있음 | 국내에서도 철회권 보장과 처리정지 요청 대응이 필수 | https://www.law.go.kr/ |
-| 국내 규제 안내 | 개인정보 처리정지 및 동의철회 관련 설명 | 찾기쉬운 생활법령정보 | 개인정보 처리정지 및 동의철회 방법과 절차는 개인정보 수집 방법보다 쉽게 해야 한다는 설명 제공 | 철회 절차는 간단하고 명확해야 하며, 모델로 회피해서는 안 됨 | https://easylaw.go.kr/ |
-| 국내 광고성 정보 안내 | 불법스팸 방지를 위한 정보통신망법 안내서 | KISA | 광고성 정보 수신동의, 수신거부, 앱 푸시 광고 수신거부 절차 등에 대한 기준 설명 | 마케팅 동의 관리, 수신거부 반영, 수신동의 확인 절차를 시스템화해야 함 | https://www.kisa.or.kr/402/form?postSeq=2577 |
+| 직접 관련 / opt-out 모델링 | Modeling Customer Opt-In and Opt-Out in a Permission-Based Marketing Context | Kumar, Zhang, Luo / Journal of Marketing Research | 고객의 opt-in 시점, opt-out 시점, 거래금액을 함께 모델링. 마케팅 강도와 고객 특성이 동의 유지 및 철회 시점에 영향을 준다는 점을 분석 | 마케팅 동의 철회는 단순 unsubscribe 이벤트가 아니라 고객 생애주기, 구매 행동, 접촉 강도와 함께 봐야 함 | https://journals.sagepub.com/doi/10.1509/jmr.13.0169 |
+| churn prediction / 분류 모델 | Bagging and Boosting Classification Trees to Predict Churn | Lemmens, Croux / Journal of Marketing Research | 통신 고객 데이터를 대상으로 bagging, boosting 기반 분류 모델이 churn 예측 성능을 높이는지 분석 | 동의 철회 예측에서도 단순 로지스틱 회귀 외에 tree ensemble 계열 모델을 baseline으로 검토할 수 있음 | https://doi.org/10.1509/jmkr.43.2.276 |
+| churn prediction / 설명가능성 | Building Comprehensible Customer Churn Prediction Models with Advanced Rule Induction Techniques | Verbeke, Martens, Mues, Baesens / Expert Systems with Applications | churn 예측에서 정확도뿐 아니라 모델 해석 가능성, 비즈니스 설명 가능성, 규칙 기반 접근의 중요성을 논의 | 캠페인 담당자가 “왜 이 고객의 철회 위험이 높은가”를 이해해야 하므로 설명 가능한 규칙, SHAP, feature importance가 중요 | https://doi.org/10.1016/j.eswa.2010.08.023 |
+| churn prediction / 대용량 데이터 | Customer Churn Prediction in Telecom Using Machine Learning in Big Data Platform | Ahmad, Jafar, Aljoumaa / Journal of Big Data | 통신사 대규모 데이터와 머신러닝, feature engineering, social network analysis를 활용해 churn 예측 모델을 구축 | 마케팅 접촉 로그, 고객 관계 데이터, 반응 로그를 결합하면 opt-out risk 예측 성능을 높일 수 있음 | https://link.springer.com/article/10.1186/s40537-019-0191-6 |
+| churn prediction / rule-based 모델 | Customer Churn Prediction in the Telecommunication Sector Using a Rough Set Approach | Amin et al. / Neurocomputing | Rough Set Theory 기반의 rule-based churn 예측 접근을 제안하고 churn·non-churn 의사결정 규칙을 추출 | 설명 가능한 세그먼트 규칙을 만들어 “어떤 조건에서 철회 위험이 높은가”를 정책화하는 데 참고 가능 | https://doi.org/10.1016/j.neucom.2016.12.009 |
+| churn prediction / hybrid 모델 | A New Hybrid Classification Algorithm for Customer Churn Prediction Based on Logistic Regression and Decision Trees | De Caigny, Coussement, De Bock / European Journal of Operational Research | Decision Tree로 고객을 세분화한 뒤 각 leaf에서 Logistic Regression을 적용하는 Logit Leaf Model 제안 | 고객군별로 철회 원인이 다를 수 있으므로 세그먼트별 모델 또는 hierarchical rule + score 구조를 검토할 수 있음 | https://doi.org/10.1016/j.ejor.2018.02.009 |
+| churn prediction / uplift 모델 | Uplift Modeling and Its Implications for B2B Customer Churn Prediction: A Segmentation-Based Modeling Approach | De Caigny, Coussement, Verbeke, Idbenjra, Phan / Industrial Marketing Management | 단순 churn 가능성 예측이 아니라 retention action의 개별 효과를 추정하는 uplift modeling을 churn 문제에 적용 | 마케팅 동의 철회 예측에서는 “원래 철회할 고객”과 “발송 때문에 철회 위험이 증가하는 고객”을 구분하는 데 중요 | https://doi.org/10.1016/j.indmarman.2021.10.001 |
+| churn prediction / uplift benchmark | A Churn Prediction Dataset from the Telecom Sector: A New Benchmark for Uplift Modeling | Verhelst, Mercier, Shrestha, Bontempi / arXiv | 통신사 churn 문제에서 uplift modeling을 평가할 수 있는 공개 benchmark dataset을 제시 | 발송 축소, 빈도 조정, preference center 안내 등 개입 정책의 효과 검증 설계에 참고 가능 | https://arxiv.org/abs/2312.07206 |
+| churn prediction / 생존분석 | Modelling Customer Churn for the Retail Industry in a Deep Learning Based Sequential Framework | Equihua, Nordmark, Ali, Lausen / arXiv | 비계약형 retail 환경에서 고객 구매 시퀀스를 활용한 deep survival framework로 churn risk를 예측 | 동의 철회까지의 시간, 장기 미반응 이후 철회 가능성처럼 time-to-event 문제로 확장할 때 참고 가능 | https://arxiv.org/abs/2304.00575 |
+| 리뷰 / 최신 동향 | Customer Churn Prediction: A Systematic Review of Recent Advances, Trends, and Challenges in Machine Learning and Deep Learning | Imani et al. / AI | 2020~2024년 churn prediction 연구를 대상으로 ML/DL 접근, 활용 산업, 성능 평가, 과제와 한계를 정리 | PoC 설계 시 최신 모델링 접근, 평가 지표, class imbalance, 설명가능성, 운영 적용 이슈를 검토하는 데 유용 | https://www.mdpi.com/2504-4990/7/3/105 |
+
+### 4.1 기존 항목 관련성 판단
+
+| 기존 항목 유형 | 판단 | 조정 방향 |
+|---|---|---|
+| 이메일 마케팅 소비자 조사 / 해설 | 이메일 수신거부 원인과 실무 운영에는 관련이 있지만, 예측 모델링 논문으로 보기에는 약함 | 4장에서는 제외하고, 필요하면 산업 사례 또는 실무 배경 자료로 분리 |
+| 개인정보 규제 문서 | 마케팅 동의 철회 예측 모델의 사용 한계와 준수 조건에는 매우 중요하지만, churn/opt-out 예측 방법론 문헌은 아님 | 12장 규제 및 윤리적 주의사항으로 이동 |
+| 동의 배너 / dark pattern UX 연구 | 동의·철회 UX 설계 윤리에는 관련이 있지만, 예측 모델 구축 방법론과는 거리가 있음 | 12장 윤리 참고 문헌으로 이동 |
+| Propensity modeling 일반 해설 | 예측 모델 운영 관점에서는 참고 가능하지만, 학술 논문·실증 연구보다 근거 수준이 낮음 | 4장 핵심 문헌에서는 제외하고, PoC 설명 자료나 실무 참고 자료로만 활용 |
 
 ---
 
@@ -418,6 +429,18 @@ if opt_out_risk_score >= 0.8 and customer_value_high = True:
 ## 12. 규제 및 윤리적 주의사항
 
 마케팅 동의 철회 예측 모델은 반드시 고객의 선택권을 보호하는 방향으로 사용해야 한다.
+
+예측 모델은 고객의 동의 철회권을 제한하거나 지연시키는 데 사용하면 안 된다. 규제 문서는 예측 방법론의 핵심 근거라기보다는, 모델을 어떤 방식으로 사용하면 안 되는지 정하는 운영 가드레일로 보는 것이 적절하다.
+
+### 12.1 참고 규제 및 윤리 문헌
+
+| 구분 | 제목 / 주제 | 핵심 내용 | 실무 시사점 | 링크 |
+|---|---|---|---|---|
+| 개인정보 규제 | GDPR Article 7 - Conditions for Consent | 동의 철회는 동의만큼 쉬워야 하며, 철회 이후에는 해당 동의에 근거한 처리를 지속할 수 없음을 명시 | 예측 모델을 철회 방해, 버튼 숨김, 절차 복잡화에 활용하면 안 됨 | https://gdpr-info.eu/art-7-gdpr/ |
+| 국내 규제 | 개인정보 보호법 제37조 | 정보주체는 개인정보 처리정지를 요구하거나 개인정보 처리에 대한 동의를 철회할 수 있음 | 국내에서도 철회권 보장과 처리정지 요청 대응이 필수 | https://www.law.go.kr/ |
+| 국내 규제 안내 | 개인정보 처리정지 및 동의철회 관련 설명 | 개인정보 처리정지 및 동의철회 방법과 절차는 개인정보 수집 방법보다 쉽게 해야 한다는 설명 제공 | 철회 절차는 간단하고 명확해야 하며, 모델로 회피해서는 안 됨 | https://easylaw.go.kr/ |
+| 국내 광고성 정보 안내 | 불법스팸 방지를 위한 정보통신망법 안내서 | 광고성 정보 수신동의, 수신거부, 앱 푸시 광고 수신거부 절차 등에 대한 기준 설명 | 마케팅 동의 관리, 수신거부 반영, 수신동의 확인 절차를 시스템화해야 함 | https://www.kisa.or.kr/402/form?postSeq=2577 |
+| 개인정보 / UX 연구 | Dark Patterns after the GDPR: Scraping Consent Pop-ups and Demonstrating Their Influence | 동의 배너의 프레이밍, 기본값, 선택 구조가 사용자의 동의 행동에 영향을 줄 수 있음을 분석 | 동의·철회 UX는 고객 자율성을 해치지 않도록 투명하게 설계해야 함 | https://arxiv.org/abs/1909.02638 |
 
 금지해야 할 활용
 
